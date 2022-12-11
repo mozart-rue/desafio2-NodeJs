@@ -7,6 +7,16 @@ class ListAllUsersController {
 
   handle(request: Request, response: Response): Response {
     // Complete aqui
+    const { user_id } = request.headers;
+    if (typeof user_id === "string") {
+      try {
+        const users = this.listAllUsersUseCase.execute({ user_id });
+        return response.json(users);
+      } catch (err) {
+        return response.status(400).json({ error: err });
+      }
+    }
+    throw new Error("user_id on Header is required");
   }
 }
 
